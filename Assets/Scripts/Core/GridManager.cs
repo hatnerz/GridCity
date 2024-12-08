@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    public int width = 10;
-    public int height = 10;
-    public float cellSize = 1f;
-    public GameObject cellPrefab;
+    [SerializeField] private int width = 10;
+    [SerializeField] private int height = 10;
+    [SerializeField] private float cellSize = 1f;
+    [SerializeField] private GameObject cellPrefab;
 
     private Cell[,] grid;
 
@@ -16,13 +16,24 @@ public class GridManager : MonoBehaviour
 
     void CreateGrid()
     {
+        if (grid != null)
+        {
+            foreach (Cell cell in grid)
+            {
+                if (cell != null && cell.cellObject != null)
+                {
+                    Destroy(cell.cellObject);
+                }
+            }
+        }
+
         grid = new Cell[width, height];
 
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                Vector3 worldPos = GetWorldPosition(x, y);
+                Vector2 worldPos = GetWorldPosition(x, y);
                 GameObject cellObject = Instantiate(cellPrefab, worldPos, Quaternion.identity);
                 cellObject.transform.SetParent(transform);
                 grid[x, y] = new Cell(cellObject);
@@ -30,12 +41,12 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public Vector3 GetWorldPosition(int x, int y)
+    public Vector2 GetWorldPosition(int x, int y)
     {
-        return new Vector3(x, y) * cellSize;
+        return new Vector2(x, y) * cellSize;
     }
 
-    public void GetXY(Vector3 worldPosition, out int x, out int y)
+    public void GetXY(Vector2 worldPosition, out int x, out int y)
     {
         x = Mathf.FloorToInt(worldPosition.x / cellSize);
         y = Mathf.FloorToInt(worldPosition.y / cellSize);
