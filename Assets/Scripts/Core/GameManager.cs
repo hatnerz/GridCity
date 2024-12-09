@@ -1,24 +1,32 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public enum GameState { MainMenu, Playing, Paused, GameOver }
-    public GameState CurrentState { get; private set; }
+    public enum GameState
+    {
+        MainMenu,
+        LevelSelect,
+        Gameplay,
+        Paused
+    }
 
-    public GridManager GridManager { get; private set; }
-    public UIManager UIManager { get; private set; }
-    public CardManager CardManager { get; private set; }
-    public ScoreManager ScoreManager { get; private set; }
+    private Dictionary<GameState, string> SceneNames = new()
+    {
+        { GameState.MainMenu, nameof(GameState.MainMenu) },
+        { GameState.LevelSelect, nameof(GameState.LevelSelect) },
+        { GameState.Gameplay, nameof(GameState.Gameplay) },
+        { GameState.Paused, nameof(GameState.Paused) }
+    };
 
-    public int CurrentTurn { get; private set; }
-    public int CurrentLevel { get; private set; }
+    public GameState CurrentGameState { get; private set; }
 
-    public event Action OnGameStart;
-    public event Action OnTurnEnd;
-    public event Action<GameState> OnGameStateChanged;
+    [SerializeField] private float sceneTransitionTime = 1f;
 
     private void Awake()
     {
@@ -31,59 +39,64 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        GridManager = GetComponent<GridManager>();
-        UIManager = GetComponent<UIManager>();
-        CardManager = GetComponent<CardManager>();
-        ScoreManager = GetComponent<ScoreManager>();
     }
 
-    public void StartNewGame()
+    private void Start()
     {
-        CurrentState = GameState.Playing;
-        CurrentTurn = 1;
-        CurrentLevel = 1;
-        OnGameStart?.Invoke();
-        OnGameStateChanged?.Invoke(CurrentState);
+        ChangeGameState(GameState.MainMenu);
     }
 
-    public void EndTurn()
+    public void ChangeGameState(GameState newState)
     {
-        CurrentTurn++;
-        OnTurnEnd?.Invoke();
+        CurrentGameState = newState;
+        LoadScene(SceneNames[newState]);
     }
 
-    public void PauseGame()
+    public void LoadScene(string sceneName)
     {
-        if (CurrentState == GameState.Playing)
-        {
-            CurrentState = GameState.Paused;
-            Time.timeScale = 0;
-            OnGameStateChanged?.Invoke(CurrentState);
-        }
+        StartCoroutine(LoadSceneCoroutine(sceneName));
+    }
+
+    private IEnumerator LoadSceneCoroutine(string sceneName)
+    {
+        // Здесь можно добавить логику для экрана загрузки
+        yield return new WaitForSeconds(sceneTransitionTime);
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void StartGame()
+    {
+        ChangeGameState(GameState.Gameplay);
+    }
+
+    public void OpenLevelSelect()
+    {
+        ChangeGameState(GameState.LevelSelect);
+    }
+
+    public void ReturnToMainMenu()
+    {
+        ChangeGameState(GameState.MainMenu);
+    }
+
+    private void PauseGame()
+    {
+        Time.timeScale = 0f;
+        // Дополнительная логика паузы
     }
 
     public void ResumeGame()
     {
-        if (CurrentState == GameState.Paused)
-        {
-            CurrentState = GameState.Playing;
-            Time.timeScale = 1;
-            OnGameStateChanged?.Invoke(CurrentState);
-        }
+        Time.timeScale = 1f;
+        ChangeGameState(GameState.Gameplay);
     }
 
-    public void GameOver()
+    public void QuitGame()
     {
-        CurrentState = GameState.GameOver;
-        OnGameStateChanged?.Invoke(CurrentState);
-    }
-
-    public void SaveGame()
-    {
-    }
-
-    public void LoadGame()
-    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
