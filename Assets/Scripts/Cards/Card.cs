@@ -1,18 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Card : MonoBehaviour
+﻿public class Card
 {
-    // Start is called before the first frame update
-    void Start()
+    public Card(CardCategory category, CardType type)
     {
-        
+        Category = category;
+        Type = type;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public CardCategory Category { get; private set; }
+    public CardType Type { get; private set; }
 }
