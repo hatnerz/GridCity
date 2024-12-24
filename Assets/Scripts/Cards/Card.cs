@@ -4,8 +4,11 @@
     {
         Category = category;
         Type = type;
+        Played = false;
     }
 
     public CardCategory Category { get; private set; }
     public CardType Type { get; private set; }
+
+    public bool Played { get; private set; }
 }

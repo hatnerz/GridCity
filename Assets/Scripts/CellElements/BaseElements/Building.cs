@@ -7,7 +7,7 @@ public abstract class Building : CellElement
     {
     }
 
-    public Sprite Sprite { get; private set; }
+    public abstract BuildingCategory BuildingCategory { get; }
 
     public abstract int BaseScore { get; }
 

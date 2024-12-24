@@ -9,7 +9,18 @@ public class CardFactory
         { CardType.SuburbanHouse, () => new BuildingCard(
             CardCategory.Building, 
             CardType.SuburbanHouse, 
-            BuildingFactory.CreateBuilding(BuildingType.SuburbanHouse)) }
+            BuildingFactory.CreateBuilding(BuildingType.SuburbanHouse)) },
+
+        { CardType.Park, () => new BuildingCard(
+            CardCategory.Building,
+            CardType.Park,
+            BuildingFactory.CreateBuilding(BuildingType.Park)) },
+
+        { CardType.ShoppingMall, () => new BuildingCard(
+            CardCategory.Building,
+            CardType.ShoppingMall,
+            BuildingFactory.CreateBuilding(BuildingType.ShoppingMall)) },
+
     };
 
     public static Card CreateCard(CardType type)

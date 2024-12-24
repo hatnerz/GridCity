@@ -6,7 +6,9 @@ public class BuildingFactory
     private static Dictionary<BuildingType, Func<Building>> buildingCreators =
         new Dictionary<BuildingType, Func<Building>>
     {
-        { BuildingType.SuburbanHouse, () => new SuburbanHouse() }
+        { BuildingType.SuburbanHouse, () => new SuburbanHouse() },
+        { BuildingType.Park, () => new Park() },
+        { BuildingType.ShoppingMall, () => new ShoppingMall() }
     };
 
     public static Building CreateBuilding(BuildingType type)
