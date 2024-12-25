@@ -9,6 +9,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private LevelData levelData;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private RectTransform cardParent;
+    [SerializeField] private CardSelectionManager selectionManager;
 
     private List<Card> deckCards = new List<Card>();
     private List<GameObject> cardObjectsInHand = new List<GameObject>();
@@ -94,6 +95,8 @@ public class CardManager : MonoBehaviour
         CardDisplay cardDisplay = cardObject.GetComponent<CardDisplay>();
 
         cardDisplay.SetCardData(cardData, card);
+
+        cardDisplay.SelectionManager = selectionManager;
 
         return cardObject;
     }
