@@ -1,0 +1,15 @@
+using UnityEngine;
+
+public abstract class Building : CellElement
+{
+    protected Building(string name)
+        : base(name)
+    {
+    }
+
+    public abstract BuildingCategory BuildingCategory { get; }
+
+    public abstract int BaseScore { get; }
+
+    public virtual int CalculateTotalBuildingScore(IGridState gridState) => BaseScore;
+}
