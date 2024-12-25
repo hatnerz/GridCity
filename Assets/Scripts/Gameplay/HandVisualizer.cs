@@ -12,6 +12,7 @@ public class HandVisualizer : MonoBehaviour
         {
             SetCardsPositions();
             cardManager.OnCardPlayed += (_) => SetCardsPositions();
+            cardManager.OnCardTakenFromDeck += (_) => SetCardsPositions();
         }
     }
 

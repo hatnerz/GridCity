@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
-    [SerializeField] private int cardsInHand = 3;
-    [SerializeField] private int deckSize = 40;
+    [SerializeField] private int maxCardsInHand = 3;
+    [SerializeField] private LevelData levelData;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private RectTransform cardParent;
 
@@ -14,28 +14,27 @@ public class CardManager : MonoBehaviour
     private List<GameObject> cardObjectsInHand = new List<GameObject>();
 
     public IReadOnlyCollection<GameObject> CardObjectsInHand => cardObjectsInHand.AsReadOnly();
+    public int InitialDeckSize { get; private set; }
+    public int RemainsCardsInDeck { get => deckCards.Count; }
 
-    public event CardPlayedEventHandler OnCardPlayed;
+    public event CardEventHandler OnCardPlayed;
+    public event CardEventHandler OnCardTakenFromDeck;
 
 
     void Start()
     {
-        var cardType = CardType.SuburbanHouse;
-        var cardData = ResourceManager.Instance.GetBuildingCardData(cardType.ToString());
-        var card = CardFactory.CreateCard(cardType);
-        AddCardGameObject(cardData, card as BuildingCard);
+        if(levelData == null)
+        {
+            throw new MissingReferenceException("LevelData is not set in CardManager");
+        }
 
-        var cardType2 = CardType.Park;
-        var cardData2 = ResourceManager.Instance.GetBuildingCardData(cardType2.ToString());
-        var card2 = CardFactory.CreateCard(cardType2);
-        AddCardGameObject(cardData2, card2 as BuildingCard);
+        InitializeDeck(levelData.DeckComposition);
 
-        var cardType3 = CardType.ShoppingMall;
-        var cardData3 = ResourceManager.Instance.GetBuildingCardData(cardType3.ToString());
-        var card3 = CardFactory.CreateCard(cardType3);
-        var playedCard = AddCardGameObject(cardData3, card3 as BuildingCard);
-
-        OnCardPlayed(playedCard);
+        for (int i = 0; i < maxCardsInHand; i++)
+        {
+            Debug.Log("taken");
+            TakeCardFromDeck();
+        }
     }
 
     void Update()
@@ -61,18 +60,36 @@ public class CardManager : MonoBehaviour
         return true;
     }
 
-    public void Initialize(List<DeckComposition> deck)
+    public void InitializeDeck(List<DeckComposition> deck)
     {
-        deckSize = deck.Sum(e => e.Count);
+        var random = new System.Random();
+
+        InitialDeckSize = deck.Sum(e => e.Count);
         deckCards = deck
             .SelectMany(e => Enumerable.Repeat(e.CardType, e.Count)
                 .Select(cardType => CardFactory.CreateCard(cardType)))
+            .OrderBy(e => random.Next())
             .ToList();
+    }
+
+    public void TakeCardFromDeck()
+    {
+        if(deckCards.Count == 0)
+            return;
+
+        var card = deckCards[0];
+        deckCards.RemoveAt(0);
+
+        var takenCard = AddCardGameObject(ResourceManager.Instance.GetBuildingCardData(card.Type.ToString()), card as BuildingCard);
+        Debug.Log(takenCard);
+        OnCardTakenFromDeck?.Invoke(takenCard);
     }
 
     private GameObject CreateCardGameObject(BuildingCardData cardData, BuildingCard card)
     {
         GameObject cardObject = Instantiate(cardPrefab, cardParent);
+
+        cardObject.name = card.Building.Name + " card";
 
         CardDisplay cardDisplay = cardObject.GetComponent<CardDisplay>();
 
@@ -83,4 +100,4 @@ public class CardManager : MonoBehaviour
 
 }
 
-public delegate void CardPlayedEventHandler(GameObject playedCard);
+public delegate void CardEventHandler(GameObject playedCard);
