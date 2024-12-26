@@ -12,6 +12,8 @@ public class SuburbanHouse : Building
 
     public override BuildingCategory BuildingCategory => BuildingCategory.Residential;
 
+    public override BuildingType BuildingType => BuildingType.SuburbanHouse;
+
     public override int CalculateTotalBuildingScore(IGridState gridState)
     {
         return base.CalculateTotalBuildingScore(gridState) + 1;

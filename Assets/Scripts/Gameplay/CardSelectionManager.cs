@@ -2,23 +2,23 @@
 
 public class CardSelectionManager : MonoBehaviour
 {
-    private CardDisplay selectedCard;
+    public CardDisplay SelectedCard { get; private set; }
 
     public void SelectCard(CardDisplay card)
     {
-        if (selectedCard != null)
+        if (SelectedCard != null)
         {
-            selectedCard.SetHighlight(false);
+            SelectedCard.SetHighlight(false);
         }
 
-        if (selectedCard != card)
+        if (SelectedCard != card)
         {
-            selectedCard = card;
-            selectedCard.SetHighlight(true);
+            SelectedCard = card;
+            SelectedCard.SetHighlight(true);
         }
         else
         {
-            selectedCard = null;
+            SelectedCard = null;
         }
     }
 }

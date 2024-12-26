@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8720527698560582217}
   - component: {fileID: 5028923019921718360}
+  - component: {fileID: 7701457981390427517}
   m_Layer: 0
   m_Name: CardDisplayTemplate
   m_TagString: Untagged
@@ -124,11 +125,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27917b3e50278294a802225e36806c91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardName: {fileID: 5805243898744229862}
-  CardScore: {fileID: 6280303952273670404}
-  CardImage: {fileID: 5264838823420407949}
-  CardDescription: {fileID: 1146335169951066975}
-  BackgroundOutlineObject: {fileID: 5236215366142312372}
+  cardName: {fileID: 5805243898744229862}
+  cardScore: {fileID: 6280303952273670404}
+  cardImage: {fileID: 5264838823420407949}
+  cardDescription: {fileID: 1146335169951066975}
+  backgroundOutlineObject: {fileID: 5236215366142312372}
+--- !u!225 &7701457981390427517
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2894794982835104693}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2931425061921941646
 GameObject:
   m_ObjectHideFlags: 0

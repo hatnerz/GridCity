@@ -12,8 +12,10 @@ public class GridVisualizer : MonoBehaviour
 {
     [SerializeField] private float cellSizeX = 3.5f;
     [SerializeField] private float cellSizeY = 2f;
+    [SerializeField] private float buildingPlaceOffsetX = 0;
+    [SerializeField] private float buildingPlaceOffsetY = 1.5f;
+    [SerializeField] private GameObject buildingPlacePrefab;
     [SerializeField] private Sprite[] groundSprites;
-    [SerializeField] private GridManager gridManager;
 
     private Vector2Int drawGridSize;
 
@@ -37,21 +39,29 @@ public class GridVisualizer : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(DelayedStart());
+        InitializeSpriteDict();
     }
 
-    private IEnumerator DelayedStart()
+    public void VisualizeGrid(Vector2Int gridSize)
     {
-        while (gridManager == null)
+        drawGridSize = CalculateActualIsometricGridSize(gridSize);
+        DrawGround();
+    }
+
+    public GameObject[,] CreateAllBuildingPlaces(Vector2Int gridSize)
+    {
+        var buildindPlaces = new GameObject[gridSize.x, gridSize.y];
+        for (int i = 0; i < gridSize.x; i++)
         {
-            yield return null;
+            for (int j = 0; j < gridSize.y; j++)
+            {
+                buildindPlaces[i, j] = CreateBuildingPlace(new Vector2Int(i, j));
+            }
         }
 
-        InitializeSpriteDict();
-        drawGridSize = CalculateGridSize();
-        DrawGround();
-
+        return buildindPlaces;
     }
+
 
     private void InitializeSpriteDict()
     {
@@ -176,13 +186,11 @@ public class GridVisualizer : MonoBehaviour
         }
     }
 
-    private void DrawGroundTile(Vector2Int isometricalPosition, Sprite sprite, int order)
+    private void DrawGroundTile(Vector2Int isometricPosition, Sprite sprite, int order)
     {
-        var spritePosition = new Vector2(
-            (isometricalPosition.x + isometricalPosition.y) * cellSizeX,
-            (isometricalPosition.y - isometricalPosition.x) * cellSizeY);
+        var spritePosition = GetActualPositionByIsometricPosition(isometricPosition);
 
-        GameObject tileObject = new GameObject($"Ground_Tile_{isometricalPosition.x}_{isometricalPosition.y}");
+        GameObject tileObject = new GameObject($"Ground_Tile_{isometricPosition.x}_{isometricPosition.y}");
         tileObject.transform.SetParent(transform);
         tileObject.transform.localPosition = spritePosition;
 
@@ -192,11 +200,35 @@ public class GridVisualizer : MonoBehaviour
         spriteRenderer.sortingOrder = order;
     }
 
-    private Vector2Int CalculateGridSize()
+    private Vector2Int CalculateActualIsometricGridSize(Vector2Int gridSize)
     {
-        var x = gridManager.SizeX + gridManager.SizeX + 1 + 2;
-        var y = gridManager.SizeY + gridManager.SizeY + 1 + 2;
+        var x = gridSize.x + gridSize.x + 1 + 2;
+        var y = gridSize.y + gridSize.y + 1 + 2;
 
         return new Vector2Int(x, y);
+    }
+
+    private GameObject CreateBuildingPlace(Vector2Int gridPosition)
+    {
+        var actualPosition = GetActualPositionByGridBuildingPosition(gridPosition);
+        var buildingPlaceCreatedObject = Instantiate(buildingPlacePrefab, actualPosition, Quaternion.identity, transform);
+        buildingPlaceCreatedObject.name = $"BuildingPlace_grid_{gridPosition.x}_{gridPosition.y}";
+        var buildingPlace = buildingPlaceCreatedObject.GetComponent<BuildingPlace>();
+        buildingPlace.GridPosition = gridPosition;
+        return buildingPlaceCreatedObject;
+    }
+
+    private Vector2 GetActualPositionByIsometricPosition(Vector2Int isometricPosition)
+    {
+        return new Vector2(
+            (isometricPosition.x + isometricPosition.y) * cellSizeX,
+            (isometricPosition.y - isometricPosition.x) * cellSizeY);
+    }
+
+    private Vector2 GetActualPositionByGridBuildingPosition(Vector2Int gridPosition)
+    {
+        return new Vector2(
+            (gridPosition.x + gridPosition.y) * cellSizeX * 2 + cellSizeX * 4 + buildingPlaceOffsetX,
+            (gridPosition.y - gridPosition.x) * cellSizeY * 2 + buildingPlaceOffsetY);
     }
 }
