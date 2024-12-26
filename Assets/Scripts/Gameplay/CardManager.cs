@@ -21,6 +21,7 @@ public class CardManager : MonoBehaviour
     public event CardEventHandler OnCardPlayed;
     public event CardEventHandler OnCardTakenFromDeck;
 
+    public delegate void CardEventHandler(GameObject playedCard);
 
     void Start()
     {
@@ -33,32 +34,15 @@ public class CardManager : MonoBehaviour
 
         for (int i = 0; i < maxCardsInHand; i++)
         {
-            Debug.Log("taken");
             TakeCardFromDeck();
         }
     }
-
-    void Update()
-    {
-        
-    }
-
 
     public GameObject AddCardGameObject(BuildingCardData cardData, BuildingCard card)
     {
         var createdCardGameObject = CreateCardGameObject(cardData, card);
         cardObjectsInHand.Add(createdCardGameObject);
         return createdCardGameObject;
-    }
-
-    public bool RemoveCardGameObject(BuildingCard card)
-    {
-        var foundCardObject = cardObjectsInHand.FirstOrDefault(e => e.GetComponent<CardDisplay>().BuildingCard == card);
-        if (foundCardObject == null)
-            return false;
-    
-        cardObjectsInHand.Remove(foundCardObject);
-        return true;
     }
 
     public void InitializeDeck(List<DeckComposition> deck)
@@ -86,6 +70,24 @@ public class CardManager : MonoBehaviour
         OnCardTakenFromDeck?.Invoke(takenCard);
     }
 
+    public Building TryPlayActiveCard()
+    {
+        var selectedCard = selectionManager.SelectedCard;
+        if (selectedCard == null)
+            return null;
+
+        var selectedCardObject = selectedCard.gameObject;
+
+        cardObjectsInHand.Remove(selectedCardObject);
+
+        OnCardPlayed?.Invoke(selectedCardObject);
+
+        if (RemainsCardsInDeck > 0)
+            TakeCardFromDeck();
+
+        return selectedCard.BuildingCard.Building;
+    }
+
     private GameObject CreateCardGameObject(BuildingCardData cardData, BuildingCard card)
     {
         GameObject cardObject = Instantiate(cardPrefab, cardParent);
@@ -100,7 +102,4 @@ public class CardManager : MonoBehaviour
 
         return cardObject;
     }
-
 }
-
-public delegate void CardEventHandler(GameObject playedCard);

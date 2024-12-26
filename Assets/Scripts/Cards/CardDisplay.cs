@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class CardDisplay : MonoBehaviour, IPointerClickHandler
 {
+    [SerializeField] private TMP_Text cardName;
+    [SerializeField] private TMP_Text cardScore;
+    [SerializeField] private Image cardImage;
+    [SerializeField] private TMP_Text cardDescription;
+    [SerializeField] private GameObject backgroundOutlineObject;
+
     private bool isHighlighted;
     private Outline outline;
-
-    public TMP_Text CardName;
-    public TMP_Text CardScore;
-    public Image CardImage;
-    public TMP_Text CardDescription;
-    public GameObject BackgroundOutlineObject;
 
     public BuildingCardData BuildingCardData { get; private set; }
     public BuildingCard BuildingCard { get; private set; }
@@ -37,14 +37,14 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler
     {
         if (BuildingCardData != null)
         {
-            CardImage.sprite = BuildingCardData.CardSprite;
-            CardDescription.text = string.Join(Environment.NewLine, BuildingCardData.EffectsDescriptions);
+            cardImage.sprite = BuildingCardData.CardSprite;
+            cardDescription.text = string.Join(Environment.NewLine, BuildingCardData.EffectsDescriptions);
         }
 
         if (BuildingCard != null)
         {
-            CardName.text = BuildingCard.Building.Name;
-            CardScore.text = BuildingCard.Building.BaseScore.ToString();
+            cardName.text = BuildingCard.Building.Name;
+            cardScore.text = BuildingCard.Building.BaseScore.ToString();
         }
     }
 
@@ -61,7 +61,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler
 
     private void InitializeOutline()
     {
-        outline = BackgroundOutlineObject.AddComponent<Outline>();
+        outline = backgroundOutlineObject.AddComponent<Outline>();
         outline.effectColor = new Color(1f, 0.5f, 0f, 1f);
         outline.effectDistance = new Vector2(3f, -3f);
         outline.useGraphicAlpha = false;

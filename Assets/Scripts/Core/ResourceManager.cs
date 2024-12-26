@@ -6,7 +6,12 @@ public class ResourceManager : MonoBehaviour
     public static ResourceManager Instance { get; private set; }
 
     [SerializeField] private List<BuildingCardData> buildingCardsData;
-    private Dictionary<string, BuildingCardData> cardDataDict;
+    [SerializeField] private List<BuildingData> buildingsData;
+
+    private Dictionary<string, BuildingCardData> cardDataDictionary;
+    private Dictionary<BuildingType, BuildingData> buildingDataDictionary;
+
+    public IReadOnlyDictionary<BuildingType, BuildingData> BuildingDataDictionary { get { return buildingDataDictionary; } }
 
     private void Awake()
     {
@@ -15,6 +20,7 @@ public class ResourceManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             InitializeCardDictionary();
+            InitializeBuildingsDictionary();
         }
         else
         {
@@ -24,17 +30,27 @@ public class ResourceManager : MonoBehaviour
 
     private void InitializeCardDictionary()
     {
-        cardDataDict = new Dictionary<string, BuildingCardData>();
+        cardDataDictionary = new Dictionary<string, BuildingCardData>();
 
         foreach (var card in buildingCardsData)
         {
-            cardDataDict[card.name] = card;
+            cardDataDictionary[card.name] = card;
+        }
+    }
+
+    private void InitializeBuildingsDictionary()
+    {
+        buildingDataDictionary = new Dictionary<BuildingType, BuildingData>();
+
+        foreach (var building in buildingsData)
+        {
+            buildingDataDictionary[building.BuildingType] = building;
         }
     }
 
     public BuildingCardData GetBuildingCardData(string cardName)
     {
-        if (cardDataDict.TryGetValue(cardName, out BuildingCardData cardData))
+        if (cardDataDictionary.TryGetValue(cardName, out BuildingCardData cardData))
         {
             return cardData;
         }

@@ -41,24 +41,24 @@ public class CardHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExit
     }
 
     private IEnumerator ScaleCard(Vector3 targetScale)
-    {
-        Debug.Log($"From {rectTransform.localScale} to {targetScale}");
-        
+    {        
         while (rectTransform.localScale != targetScale)
         {
             rectTransform.localScale = Vector3.Lerp(rectTransform.localScale, targetScale, Time.deltaTime * scaleSpeed);
-            Debug.Log($"Current scale: {rectTransform.localScale}");
             yield return null;
         }
     }
 
     private void OnDisable()
     {
-        rectTransform.localScale = originalScale;
-        isHovering = false;
-        if (hoverCoroutine != null)
+        if (rectTransform != null)
         {
-            StopCoroutine(hoverCoroutine);
+            rectTransform.localScale = originalScale;
+            isHovering = false;
+            if (hoverCoroutine != null)
+            {
+                StopCoroutine(hoverCoroutine);
+            }
         }
     }
 }
