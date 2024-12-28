@@ -9,16 +9,26 @@ namespace Assets.Scripts.Score
 {
     public class ScoreManager : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        [SerializeField] private GridManager gridManager;
+
+        /*void Start()
         {
 
-        }
+        }*/
 
-        // Update is called once per frame
-        void Update()
+        public int CalculateTotalScore()
         {
+            var totalScore = 0;
+            foreach (var buildingPlaceObjects in gridManager.BuildingPlacesObjects)
+            {
+                var building = buildingPlaceObjects.GetComponent<BuildingPlace>().Building;
+                if (building != null)
+                {
+                    totalScore += building.CalculateTotalBuildingScore(gridManager);
+                }
+            }
 
+            return totalScore;
         }
     }
 

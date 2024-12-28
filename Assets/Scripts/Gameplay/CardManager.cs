@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +7,10 @@ using UnityEngine;
 public class CardManager : MonoBehaviour
 {
     [SerializeField] private int maxCardsInHand = 3;
-    [SerializeField] private LevelData levelData;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private RectTransform cardParent;
     [SerializeField] private CardSelectionManager selectionManager;
+    [SerializeField] private LevelData levelData;
 
     private List<Card> deckCards = new List<Card>();
     private List<GameObject> cardObjectsInHand = new List<GameObject>();
@@ -20,16 +21,21 @@ public class CardManager : MonoBehaviour
 
     public event CardEventHandler OnCardPlayed;
     public event CardEventHandler OnCardTakenFromDeck;
+    public event LastCardEventHandler OnLastCardPlayed;
 
     public delegate void CardEventHandler(GameObject playedCard);
+    public delegate void LastCardEventHandler();
 
     void Start()
     {
-        if(levelData == null)
+        if(levelData != null)
         {
-            throw new MissingReferenceException("LevelData is not set in CardManager");
+            InitializeLevelDeck(levelData);
         }
+    }
 
+    public void InitializeLevelDeck(LevelData levelData)
+    {
         InitializeDeck(levelData.DeckComposition);
 
         for (int i = 0; i < maxCardsInHand; i++)
@@ -83,6 +89,9 @@ public class CardManager : MonoBehaviour
 
         if (RemainsCardsInDeck > 0)
             TakeCardFromDeck();
+
+        if (RemainsCardsInDeck == 0 && cardObjectsInHand.Count == 0)
+            OnLastCardPlayed?.Invoke();
 
         return selectedCard.BuildingCard.Building;
     }

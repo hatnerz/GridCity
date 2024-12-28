@@ -4,17 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class StartGameAction : IButtonAction
+public class StartLevelAction : IButtonAction
 {
     private readonly GameManager gameManager;
 
-    public StartGameAction(GameManager gameManager)
+    public int LevelNumber { get; private set; }
+
+    public StartLevelAction(int levelNumber, GameManager gameManager)
     {
+        LevelNumber = levelNumber;
         this.gameManager = gameManager;
     }
 
     public void Execute()
     {
-        gameManager.OpenLevelSelect();
+        gameManager.StartLevel(LevelNumber);
     }
 }
+

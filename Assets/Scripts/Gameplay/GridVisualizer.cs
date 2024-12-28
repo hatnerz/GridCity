@@ -37,9 +37,10 @@ public class GridVisualizer : MonoBehaviour
 
     private Dictionary<string, Sprite> spriteDict;
 
-    void Start()
+    void Awake()
     {
         InitializeSpriteDict();
+        Debug.Log($"Grid sprites initialized: {spriteDict.Count}");
     }
 
     public void VisualizeGrid(Vector2Int gridSize)

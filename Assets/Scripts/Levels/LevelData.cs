@@ -7,4 +7,5 @@ public class LevelData : ScriptableObject
     public int LevelNumber;
     public List<DeckComposition> DeckComposition = new List<DeckComposition>();
     public int TargetScore;
+    public Vector2Int GridSize;
 }
