@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,10 @@ public class CardManager : MonoBehaviour
 
     public event CardEventHandler OnCardPlayed;
     public event CardEventHandler OnCardTakenFromDeck;
+    public event LastCardEventHandler OnLastCardPlayed;
 
     public delegate void CardEventHandler(GameObject playedCard);
+    public delegate void LastCardEventHandler();
 
     void Start()
     {
@@ -86,6 +89,9 @@ public class CardManager : MonoBehaviour
 
         if (RemainsCardsInDeck > 0)
             TakeCardFromDeck();
+
+        if (RemainsCardsInDeck == 0 && cardObjectsInHand.Count == 0)
+            OnLastCardPlayed?.Invoke();
 
         return selectedCard.BuildingCard.Building;
     }

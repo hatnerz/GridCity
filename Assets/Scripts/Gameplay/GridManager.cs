@@ -13,7 +13,7 @@ public class GridManager : MonoBehaviour, IGridState
     public int SizeY { get { return sizeY; } }
 
     public CellElement[,] GridElements { get; private set; }
-    public GameObject[,] BuildingPlaces { get; private set; }
+    public GameObject[,] BuildingPlacesObjects { get; private set; }
 
     public GameObject CurrentHoveringBuildingPlace { get; private set; }
 
@@ -38,7 +38,16 @@ public class GridManager : MonoBehaviour, IGridState
 
         var gridSize = levelData.GridSize;
         gridVisualizer.VisualizeGrid(gridSize);
-        BuildingPlaces = gridVisualizer.CreateAllBuildingPlaces(gridSize);
+        BuildingPlacesObjects = gridVisualizer.CreateAllBuildingPlaces(gridSize);
+        GridElements = new CellElement[gridSize.x, gridSize.y];
+
+        for(int x = 0; x < gridSize.x; x++)
+        {
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                GridElements[x, y] = new Ground("Land", GroundType.Land);
+            }
+        }
     }
 
     private void OnEnable()
@@ -70,6 +79,7 @@ public class GridManager : MonoBehaviour, IGridState
     private void HandleBuildingPlaceClick(BuildingPlace buildingPlace)
     {
         var buildingToBuild = cardManager.TryPlayActiveCard();
+        buildingToBuild.GridPosition = new Vector2Int(buildingPlace.GridPosition.x, buildingPlace.GridPosition.y);
 
         if (buildingToBuild == null)
         {
@@ -82,9 +92,9 @@ public class GridManager : MonoBehaviour, IGridState
         buildingPlace.Building = buildingToBuild;
         buildingPlace.BuildingData = buildingData;
         buildingPlace.VisualizeBuilding();
+        GridElements[buildingPlace.GridPosition.x, buildingPlace.GridPosition.y] = buildingPlace.Building;
 
         Debug.Log($"Building placed on {buildingPlace.GridPosition} ");
-
         OnBuildingPlaced?.Invoke(buildingPlace);
     }
 }

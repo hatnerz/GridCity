@@ -467,7 +467,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardManager: {fileID: 170233899}
   gridManager: {fileID: 918402951}
-  scoreManager: {fileID: 0}
+  scoreManager: {fileID: 693616538}
   levelStateInformation: {fileID: 1030477025}
 --- !u!4 &384733482
 Transform:
@@ -1046,6 +1046,51 @@ Transform:
   - {fileID: 854537615}
   - {fileID: 169010575}
   m_Father: {fileID: 391365186}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &693616537
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 693616539}
+  - component: {fileID: 693616538}
+  m_Layer: 0
+  m_Name: ScoreManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &693616538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693616537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89566a195af9ba74db32a11a854e837a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridManager: {fileID: 918402951}
+--- !u!4 &693616539
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693616537}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 609.26416, y: 534.8704, z: -6.7216024}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &729656099
 GameObject:
@@ -3178,3 +3223,4 @@ SceneRoots:
   - {fileID: 170233898}
   - {fileID: 831967569}
   - {fileID: 391365186}
+  - {fileID: 693616539}

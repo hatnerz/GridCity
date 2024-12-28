@@ -35,7 +35,7 @@ namespace Assets.Scripts.Gameplay
             levelStateInformation.LevelNumberText.text = $"Level {levelData.LevelNumber}";
 
             levelStateInformation.LevelTargetScoreText.text = $"Target score: {levelData.TargetScore}";
-            levelStateInformation.CurrentScoreText.text = $"Current score: 0"; // TODO
+            levelStateInformation.CurrentScoreText.text = $"Current score: {scoreManager.CalculateTotalScore()}";
 
             levelStateInformation.TotalCardsInDeckText.text = $"Total cards: {cardManager.InitialDeckSize}";
             levelStateInformation.RemainsCardsInDeckText.text = $"Remains cards: {cardManager.RemainsCardsInDeck}";
@@ -48,13 +48,13 @@ namespace Assets.Scripts.Gameplay
 
         private void HandleScore()
         {
-            // TODO: add score calculating and visualizing
-            UpdateCurrentScoreHudInformation();
+            var currentScore = scoreManager.CalculateTotalScore();
+            UpdateCurrentScoreHudInformation(currentScore);
         }
 
-        private void UpdateCurrentScoreHudInformation()
+        private void UpdateCurrentScoreHudInformation(int score)
         {
-
+            levelStateInformation.CurrentScoreText.text = $"Current score: {score}";
         }
     }
 
