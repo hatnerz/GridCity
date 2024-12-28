@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.UI.Buttons.Actions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,12 +8,14 @@ using UnityEngine;
 
 internal class LevelSelectManager : MonoBehaviour
 {
-    [SerializeField] GameObject levelSelectButtonPrefab;
-    [SerializeField] GameObject levelSelectButtonsParent;
+    [SerializeField] private ActionButton backToMenuButton;
+    [SerializeField] private GameObject levelSelectButtonPrefab;
+    [SerializeField] private GameObject levelSelectButtonsParent;
 
     private void Start()
     {
         InitializeLevelSelectButton();
+        InitializeBackToMenuButton();
     }
 
     private void InitializeLevelSelectButton()
@@ -33,5 +36,10 @@ internal class LevelSelectManager : MonoBehaviour
             button.GetComponent<LevelSelectButton>().LevelSelectButtonText.text = level.Key.ToString();
             startLevelButtonPosition.x += 100;
         }
+    }
+
+    private void InitializeBackToMenuButton()
+    {
+        backToMenuButton.SetAction(new BackToMenuAction(GameManager.Instance));
     }
 }
