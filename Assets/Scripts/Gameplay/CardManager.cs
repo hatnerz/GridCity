@@ -38,7 +38,7 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    public GameObject AddCardGameObject(BuildingCardData cardData, BuildingCard card)
+    public GameObject AddCardGameObject(CardData cardData, BuildingCard card)
     {
         var createdCardGameObject = CreateCardGameObject(cardData, card);
         cardObjectsInHand.Add(createdCardGameObject);
@@ -64,8 +64,7 @@ public class CardManager : MonoBehaviour
 
         var card = deckCards[0];
         deckCards.RemoveAt(0);
-
-        var takenCard = AddCardGameObject(ResourceManager.Instance.GetBuildingCardData(card.Type.ToString()), card as BuildingCard);
+        var takenCard = AddCardGameObject(ResourceManager.Instance.CardDataDictionary[card.Type], card as BuildingCard);
         Debug.Log(takenCard);
         OnCardTakenFromDeck?.Invoke(takenCard);
     }
@@ -88,7 +87,7 @@ public class CardManager : MonoBehaviour
         return selectedCard.BuildingCard.Building;
     }
 
-    private GameObject CreateCardGameObject(BuildingCardData cardData, BuildingCard card)
+    private GameObject CreateCardGameObject(CardData cardData, BuildingCard card)
     {
         GameObject cardObject = Instantiate(cardPrefab, cardParent);
 

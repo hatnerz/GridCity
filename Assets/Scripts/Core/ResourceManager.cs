@@ -5,13 +5,15 @@ public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager Instance { get; private set; }
 
-    [SerializeField] private List<BuildingCardData> buildingCardsData;
+    [SerializeField] private List<CardData> buildingCardsData;
     [SerializeField] private List<BuildingData> buildingsData;
 
-    private Dictionary<string, BuildingCardData> cardDataDictionary;
+    private Dictionary<CardType, CardData> cardDataDictionary;
     private Dictionary<BuildingType, BuildingData> buildingDataDictionary;
 
     public IReadOnlyDictionary<BuildingType, BuildingData> BuildingDataDictionary { get { return buildingDataDictionary; } }
+    public IReadOnlyDictionary<CardType, CardData> CardDataDictionary { get { return cardDataDictionary; } }
+
 
     private void Awake()
     {
@@ -30,11 +32,11 @@ public class ResourceManager : MonoBehaviour
 
     private void InitializeCardDictionary()
     {
-        cardDataDictionary = new Dictionary<string, BuildingCardData>();
+        cardDataDictionary = new Dictionary<CardType, CardData>();
 
         foreach (var card in buildingCardsData)
         {
-            cardDataDictionary[card.name] = card;
+            cardDataDictionary[card.CardType] = card;
         }
     }
 
@@ -46,16 +48,5 @@ public class ResourceManager : MonoBehaviour
         {
             buildingDataDictionary[building.BuildingType] = building;
         }
-    }
-
-    public BuildingCardData GetBuildingCardData(string cardName)
-    {
-        if (cardDataDictionary.TryGetValue(cardName, out BuildingCardData cardData))
-        {
-            return cardData;
-        }
-
-        Debug.LogWarning($"BuildingCardData not found for card name: {cardName}");
-        return null;
     }
 }

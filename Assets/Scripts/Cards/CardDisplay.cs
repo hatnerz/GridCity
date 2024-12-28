@@ -15,7 +15,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler
     private bool isHighlighted;
     private Outline outline;
 
-    public BuildingCardData BuildingCardData { get; private set; }
+    public CardData BuildingCardData { get; private set; }
     public BuildingCard BuildingCard { get; private set; }
     public CardSelectionManager SelectionManager { get; set; }
 
@@ -26,7 +26,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler
         InitializeOutline();
     }
 
-    public void SetCardData(BuildingCardData data, BuildingCard card)
+    public void SetCardData(CardData data, BuildingCard card)
     {
         BuildingCardData = data;
         BuildingCard = card;
