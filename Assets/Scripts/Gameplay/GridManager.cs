@@ -1,64 +1,74 @@
 using UnityEngine;
 
-public class GridManager : MonoBehaviour
+public class GridManager : MonoBehaviour, IGridState
 {
-    [SerializeField] private int width = 10;
-    [SerializeField] private int height = 10;
-    [SerializeField] private float cellSize = 1f;
-    [SerializeField] private GameObject cellPrefab;
+    [SerializeField] private int sizeX = 10;
+    [SerializeField] private int sizeY = 10;
+    [SerializeField] private GridVisualizer gridVisualizer;
+    [SerializeField] private CardManager cardManager;
 
-    private Cell[,] grid;
+    public int SizeX { get { return sizeX; } }
+    public int SizeY { get { return sizeY; } }
+
+    public CellElement[,] GridElements { get; private set; }
+    public GameObject[,] BuildingPlaces { get; private set; }
+
+    public GameObject CurrentHoveringBuildingPlace { get; private set; } 
 
     void Start()
     {
-        CreateGrid();
-    }
-
-    void CreateGrid()
-    {
-        if (grid != null)
+        if(gridVisualizer == null)
         {
-            foreach (Cell cell in grid)
-            {
-                if (cell != null && cell.cellObject != null)
-                {
-                    Destroy(cell.cellObject);
-                }
-            }
+            throw new MissingReferenceException("GridVisualizer is not set in GridManager");
         }
 
-        grid = new Cell[width, height];
+        var gridSize = new Vector2Int(sizeX, sizeY);
+        gridVisualizer.VisualizeGrid(gridSize);
+        BuildingPlaces = gridVisualizer.CreateAllBuildingPlaces(gridSize);
+    }
 
-        for (int x = 0; x < width; x++)
+    private void OnEnable()
+    {
+        BuildingPlace.OnMouseEnter += HandleBuildingPlaceEnter;
+        BuildingPlace.OnMouseExit += HandleBuildingPlaceExit;
+        BuildingPlace.OnMouseClick += HandleBuildingPlaceClick;
+    }
+
+    private void OnDisable()
+    {
+        BuildingPlace.OnMouseEnter -= HandleBuildingPlaceEnter;
+        BuildingPlace.OnMouseExit -= HandleBuildingPlaceExit;
+        BuildingPlace.OnMouseClick -= HandleBuildingPlaceClick;
+    }
+
+    private void HandleBuildingPlaceEnter(BuildingPlace buildingPlace)
+    {
+        // Debug.Log($"Pointer moved to building position {buildingPlace.GridPosition}");
+        CurrentHoveringBuildingPlace = buildingPlace.gameObject;
+    }
+
+    private void HandleBuildingPlaceExit(BuildingPlace buildingPlace)
+    {
+        // Debug.Log($"Pointer moved from building position  {buildingPlace.GridPosition}");
+        CurrentHoveringBuildingPlace = null;
+    }
+
+    private void HandleBuildingPlaceClick(BuildingPlace buildingPlace)
+    {
+        var buildingToBuild = cardManager.TryPlayActiveCard();
+
+        if (buildingToBuild == null)
         {
-            for (int y = 0; y < height; y++)
-            {
-                Vector2 worldPos = GetWorldPosition(x, y);
-                GameObject cellObject = Instantiate(cellPrefab, worldPos, Quaternion.identity);
-                cellObject.transform.SetParent(transform);
-                grid[x, y] = new Cell(cellObject);
-            }
+            Debug.Log("Building not picked");
+            return;
         }
-    }
 
-    public Vector2 GetWorldPosition(int x, int y)
-    {
-        return new Vector2(x, y) * cellSize;
-    }
+        var buildingData = ResourceManager.Instance.BuildingDataDictionary[buildingToBuild.BuildingType];
 
-    public void GetXY(Vector2 worldPosition, out int x, out int y)
-    {
-        x = Mathf.FloorToInt(worldPosition.x / cellSize);
-        y = Mathf.FloorToInt(worldPosition.y / cellSize);
-    }
-}
+        buildingPlace.Building = buildingToBuild;
+        buildingPlace.BuildingData = buildingData;
+        buildingPlace.VisualizeBuilding();
 
-public class Cell
-{
-    public GameObject cellObject;
-
-    public Cell(GameObject cellObject)
-    {
-        this.cellObject = cellObject;
+        Debug.Log($"Try to place building on {buildingPlace.GridPosition} ");
     }
 }
