@@ -1,4 +1,5 @@
 using UnityEngine;
+using static CardManager;
 
 public class GridManager : MonoBehaviour, IGridState
 {
@@ -14,7 +15,11 @@ public class GridManager : MonoBehaviour, IGridState
     public CellElement[,] GridElements { get; private set; }
     public GameObject[,] BuildingPlaces { get; private set; }
 
-    public GameObject CurrentHoveringBuildingPlace { get; private set; } 
+    public GameObject CurrentHoveringBuildingPlace { get; private set; }
+
+    public event BuildingEventHandler OnBuildingPlaced;
+
+    public delegate void BuildingEventHandler(BuildingPlace placedBuilding);
 
     private void Start()
     {
@@ -78,6 +83,9 @@ public class GridManager : MonoBehaviour, IGridState
         buildingPlace.BuildingData = buildingData;
         buildingPlace.VisualizeBuilding();
 
-        Debug.Log($"Try to place building on {buildingPlace.GridPosition} ");
+        Debug.Log($"Building placed on {buildingPlace.GridPosition} ");
+
+        OnBuildingPlaced?.Invoke(buildingPlace);
     }
 }
+
