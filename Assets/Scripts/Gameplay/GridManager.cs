@@ -6,6 +6,7 @@ public class GridManager : MonoBehaviour, IGridState
     [SerializeField] private int sizeY = 10;
     [SerializeField] private GridVisualizer gridVisualizer;
     [SerializeField] private CardManager cardManager;
+    [SerializeField] private LevelData levelData;
 
     public int SizeX { get { return sizeX; } }
     public int SizeY { get { return sizeY; } }
@@ -15,14 +16,22 @@ public class GridManager : MonoBehaviour, IGridState
 
     public GameObject CurrentHoveringBuildingPlace { get; private set; } 
 
-    void Start()
+    private void Start()
     {
-        if(gridVisualizer == null)
+        if(levelData != null)
+        {
+            InitializeLevelGrid(levelData);
+        }
+    }
+
+    public void InitializeLevelGrid(LevelData levelData)
+    {
+        if (gridVisualizer == null)
         {
             throw new MissingReferenceException("GridVisualizer is not set in GridManager");
         }
 
-        var gridSize = new Vector2Int(sizeX, sizeY);
+        var gridSize = levelData.GridSize;
         gridVisualizer.VisualizeGrid(gridSize);
         BuildingPlaces = gridVisualizer.CreateAllBuildingPlaces(gridSize);
     }
