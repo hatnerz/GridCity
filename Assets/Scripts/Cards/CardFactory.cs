@@ -21,6 +21,11 @@ public class CardFactory
             CardType.ShoppingMall,
             BuildingFactory.CreateBuilding(BuildingType.ShoppingMall)) },
 
+        { CardType.Factory, () => new BuildingCard(
+            CardCategory.Building,
+            CardType.Factory,
+            BuildingFactory.CreateBuilding(BuildingType.Factory)) },
+
     };
 
     public static Card CreateCard(CardType type)

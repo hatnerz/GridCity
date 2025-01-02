@@ -8,7 +8,8 @@ public class BuildingFactory
     {
         { BuildingType.SuburbanHouse, () => new SuburbanHouse() },
         { BuildingType.Park, () => new Park() },
-        { BuildingType.ShoppingMall, () => new ShoppingMall() }
+        { BuildingType.ShoppingMall, () => new ShoppingMall() },
+        { BuildingType.Factory, () => new Factory() }
     };
 
     public static Building CreateBuilding(BuildingType type)
