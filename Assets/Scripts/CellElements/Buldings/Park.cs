@@ -3,17 +3,11 @@
     public Park()
         : base("Park")
     {
-
     }
 
-    public override int BaseScore => 3;
+    public override int BaseScore => 4;
 
     public override BuildingCategory BuildingCategory => BuildingCategory.Facilities;
 
     public override BuildingType BuildingType => BuildingType.Park;
-
-    public override int CalculateTotalBuildingScore(IGridState gridState)
-    {
-        return base.CalculateTotalBuildingScore(gridState) + 1;
-    }
 }

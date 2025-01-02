@@ -1,3 +1,4 @@
+using Assets.Scripts.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -59,14 +60,17 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
-        // Здесь можно добавить логику для экрана загрузки
+        // TODO: add anim to load screen;
         yield return new WaitForSeconds(sceneTransitionTime);
         SceneManager.LoadScene(sceneName);
     }
 
-    public void StartGame()
+    public void StartLevel(int levelNumber)
     {
-        ChangeGameState(GameState.Gameplay);
+        CurrentGameState = GameState.Gameplay;
+
+        GameplayState.CurrentLevelNumber = levelNumber;
+        LoadScene(SceneNames[GameState.Gameplay]);
     }
 
     public void OpenLevelSelect()
@@ -82,7 +86,7 @@ public class GameManager : MonoBehaviour
     private void PauseGame()
     {
         Time.timeScale = 0f;
-        // Дополнительная логика паузы
+        // TODO: add additional logic
     }
 
     public void ResumeGame()

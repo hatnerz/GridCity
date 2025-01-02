@@ -15,6 +15,6 @@ public class StartGameAction : IButtonAction
 
     public void Execute()
     {
-        gameManager.StartGame();
+        gameManager.OpenLevelSelect();
     }
 }

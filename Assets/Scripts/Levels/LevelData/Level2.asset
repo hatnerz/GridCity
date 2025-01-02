@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e025c939b2edf494cb1ee31ca1a93fca, type: 3}
   m_Name: Level2
   m_EditorClassIdentifier: 
-  LevelNumber: 1
+  LevelNumber: 2
   DeckComposition:
   - CardType: 0
     Count: 3
@@ -21,3 +21,4 @@ MonoBehaviour:
   - CardType: 2
     Count: 2
   TargetScore: 60
+  GridSize: {x: 4, y: 4}

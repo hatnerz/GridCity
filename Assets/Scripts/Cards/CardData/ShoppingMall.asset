@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cfd825d282233e4fadcf81d9604db6a, type: 3}
+  m_Script: {fileID: 11500000, guid: ee125a1580a8a9541b1a1afa78059a46, type: 3}
   m_Name: ShoppingMall
   m_EditorClassIdentifier: 
+  CardType: 2
   CardSprite: {fileID: 21300000, guid: 5102f61ff4eb5fe4284f629d0786b85e, type: 3}
   EffectsDescriptions:
-  - -1 for each unbuild adjacent grid cell
+  - -1 for each adjacent unbuilt grid cell
