@@ -216,10 +216,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fa2f2db9d3d8fab4595992771f8c0195, type: 2}
   - {fileID: 11400000, guid: 7aa749255c8979e42876c5ae0d0f6756, type: 2}
   - {fileID: 11400000, guid: bb2b95554e31481479655c361f782235, type: 2}
+  - {fileID: 11400000, guid: 945459db918e7bc47bf4ba1ec3b37a47, type: 2}
   buildingsData:
   - {fileID: 11400000, guid: 1abfac95f98ce70469f728c8d19d75e6, type: 2}
   - {fileID: 11400000, guid: e37424a33f7e2c946afd9844269c9016, type: 2}
   - {fileID: 11400000, guid: 5f438b6344af7604893173aa4a0b0093, type: 2}
+  - {fileID: 11400000, guid: ff5447f084ff3004b85d33e2a6a133e8, type: 2}
   levelsData:
   - {fileID: 11400000, guid: 4e9d5e86d53597f4abc2ce5ab7e65417, type: 2}
   - {fileID: 11400000, guid: 39b062b754612c94c93661e1aeaa28c5, type: 2}
