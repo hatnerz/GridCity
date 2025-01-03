@@ -10,5 +10,6 @@
     University = 7,
     Hospital = 8,
     ApartmentBuilding = 9,
-    Factory = 10
+    Factory = 10,
+    PowerPlant = 11
 }

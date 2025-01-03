@@ -9,7 +9,15 @@ public class BuildingFactory
         { BuildingType.SuburbanHouse, () => new SuburbanHouse() },
         { BuildingType.Park, () => new Park() },
         { BuildingType.ShoppingMall, () => new ShoppingMall() },
-        { BuildingType.Factory, () => new Factory() }
+        { BuildingType.Factory, () => new Factory() },
+        { BuildingType.Hospital, () => new Hospital() },
+        { BuildingType.University, () => new University() },
+        { BuildingType.Office, () => new Office() },
+        { BuildingType.Bar, () => new Bar() },
+        { BuildingType.NeighborhoodShop, () => new NeighborhoodShop() },
+        { BuildingType.TownHall, () => new TownHall() },
+        { BuildingType.ApartmentBuilding, () => new ApartmentBuilding() },
+        { BuildingType.PowerPlant, () => new PowerPlant() }
     };
 
     public static Building CreateBuilding(BuildingType type)
