@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using static CardManager;
 
 public class GridManager : MonoBehaviour, IGridState
@@ -96,6 +98,43 @@ public class GridManager : MonoBehaviour, IGridState
 
         Debug.Log($"Building placed on {buildingPlace.GridPosition} ");
         OnBuildingPlaced?.Invoke(buildingPlace);
+    }
+
+    public List<CellElement> GetNeighbors(CellElement cell)
+    {
+        var neighbors = new List<CellElement>();
+        var directions = new Vector2Int[]
+        {
+        new Vector2Int(0, 1),  // Верх
+        new Vector2Int(1, 0),  // Право
+        new Vector2Int(0, -1), // Низ
+        new Vector2Int(-1, 0)  // Ліво
+        };
+
+        if (cell.GridPosition == null)
+        {
+            Debug.LogWarning("Cell does not have a valid GridPosition.");
+            return neighbors;
+        }
+
+        var cellPosition = cell.GridPosition.Value;
+
+        foreach (var direction in directions)
+        {
+            var neighborPosition = cellPosition + direction;
+
+            if (neighborPosition.x >= 0 && neighborPosition.x < GridElements.GetLength(0) &&
+                neighborPosition.y >= 0 && neighborPosition.y < GridElements.GetLength(1))
+            {
+                var neighbor = GridElements[neighborPosition.x, neighborPosition.y];
+                if (neighbor != null)
+                {
+                    neighbors.Add(neighbor);
+                }
+            }
+        }
+
+        return neighbors;
     }
 }
 

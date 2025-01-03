@@ -16,6 +16,6 @@ public class SuburbanHouse : Building
 
     public override int CalculateTotalBuildingScore(IGridState gridState)
     {
-        return base.CalculateTotalBuildingScore(gridState) + 1;
+        return base.CalculateTotalBuildingScore(gridState);
     }
 }

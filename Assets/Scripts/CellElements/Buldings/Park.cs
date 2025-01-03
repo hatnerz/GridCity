@@ -14,6 +14,19 @@
 
     public override int CalculateTotalBuildingScore(IGridState gridState)
     {
-        return base.CalculateTotalBuildingScore(gridState) + 1;
+        int totalBuildingScore = base.CalculateTotalBuildingScore(gridState);
+
+        var neighbors = gridState.GetNeighbors(this);
+
+        foreach (var neighbor in neighbors)
+        {
+            if (neighbor is Building neighborBuilding &&
+                neighborBuilding.BuildingCategory == BuildingCategory.Residential)
+            {
+                totalBuildingScore += 1;
+            }
+        }
+
+        return totalBuildingScore;
     }
 }

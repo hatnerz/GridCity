@@ -1,4 +1,6 @@
-﻿public class ShoppingMall : Building
+﻿using UnityEngine.UIElements;
+
+public class ShoppingMall : Building
 {
     public ShoppingMall()
         : base("Shopping Mall")
@@ -14,6 +16,18 @@
 
     public override int CalculateTotalBuildingScore(IGridState gridState)
     {
-        return base.CalculateTotalBuildingScore(gridState) + 1;
+        int totalScore = base.CalculateTotalBuildingScore(gridState);
+
+        var neighbors = gridState.GetNeighbors(this);
+
+        foreach (var neighbor in neighbors)
+        {
+            if (neighbor is Ground)
+            {
+                totalScore -= 1;
+            }
+        }
+
+        return totalScore;
     }
 }

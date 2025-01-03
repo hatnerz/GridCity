@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public interface IGridState
 {
@@ -6,5 +7,7 @@ public interface IGridState
 
     int SizeX { get; }
     int SizeY { get; }
+
+    List<CellElement> GetNeighbors(CellElement cell);
 }
 
