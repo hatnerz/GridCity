@@ -15,4 +15,5 @@ MonoBehaviour:
   CardType: 2
   CardSprite: {fileID: 21300000, guid: 5102f61ff4eb5fe4284f629d0786b85e, type: 3}
   EffectsDescriptions:
-  - -1 for each adjacent unbuilt grid cell
+  - -1 point for each unbuilt adjacent cell.
+  - +2 points for each adjacent Commercial building.

@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardType: 3
   CardSprite: {fileID: 21300000, guid: 5766d90a7802ebf45883c19e895cf00f, type: 3}
-  EffectsDescriptions: []
+  EffectsDescriptions:
+  - +1 point for each adjacent Commercial building.
+  - +1 point for each adjacent Facilities building.
