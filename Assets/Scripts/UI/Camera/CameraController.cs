@@ -7,6 +7,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float minZoom = 2f;
     [SerializeField] private float maxZoom = 15f;
     [SerializeField] private float panSpeed = 50f;
+    [SerializeField] private float minPanSpeed = 6.67f;
+    [SerializeField] private float maxPanSpeed = 50f;
     [SerializeField] private float panBorderThickness = 100f;
     [SerializeField] private float cellRatioX = 4.4f; 
     [SerializeField] private float cellRatioY = 2.54f;
@@ -43,10 +45,10 @@ public class CameraController : MonoBehaviour
         float cameraHeight = cam.orthographicSize;
         float cameraWidth = cameraHeight * cam.aspect;
 
-        panMin.x = (((groundWidth * cellRatioX) / groundSqares) * 2.5f);
-        panMax.x = ((groundWidth * cellRatioX) / groundSqares) * (groundSqares - 2.5f);
-        panMin.y = -((groundWidth * cellRatioY) / groundSqares) * (groundSqares / 2 - 2.5f);
-        panMax.y = ((groundWidth * cellRatioY) / groundSqares) * (groundSqares / 2 - 2.5f);
+        panMin.x = (((groundWidth * cellRatioX) / groundSqares) * 0.5f);
+        panMax.x = ((groundWidth * cellRatioX) / groundSqares) * (groundSqares - 0.5f);
+        panMin.y = -((groundWidth * cellRatioY) / groundSqares) * (groundSqares / 2 - 0.5f);
+        panMax.y = ((groundWidth * cellRatioY) / groundSqares) * (groundSqares / 2 - 0.5f);
 
         transform.position = new Vector3((panMin.x + panMax.x) / 2, 0, transform.position.z);
     }
@@ -54,7 +56,7 @@ public class CameraController : MonoBehaviour
     private void ZoomCamera(float increment)
     {
         cam.orthographicSize = Mathf.Clamp(cam.orthographicSize - increment * zoomSpeed, minZoom, maxZoom);
-        panSpeed = Mathf.Clamp(panSpeed - increment * 10, 10f, 50f);
+        panSpeed = Mathf.Clamp(panSpeed - increment * 10, minPanSpeed, maxPanSpeed);
     }
 
     private void PanCamera()
