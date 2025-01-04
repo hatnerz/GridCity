@@ -8,7 +8,7 @@ public class ShoppingMall : Building
     {
     }
 
-    public override int BaseScore => 8;
+    public override int BaseScore => 5;
 
     public override BuildingCategory BuildingCategory => BuildingCategory.Commercial;
 
@@ -19,7 +19,24 @@ public class ShoppingMall : Building
         if (GridPosition == null)
             return BaseScore;
 
-        var adjacentBuildings = GridElementsHelper.GetAdjacentBuildings(GridPosition.Value, gridState);
-        return BaseScore - (4 - adjacentBuildings.Count);
+        var adjacentCoordinates = GridElementsHelper.GetAdjacentCoordinates(GridPosition.Value, gridState);
+
+        int totalScore = BaseScore;
+
+        foreach (var coordinate in adjacentCoordinates)
+        {
+            var building = GridElementsHelper.GetBuildingIfExistsOnGrid(coordinate, gridState);
+
+            if (building == null)
+            {
+                totalScore -= 1;
+            }
+            else if (building.BuildingCategory == BuildingCategory.Commercial)
+            {
+                totalScore += 2;
+            }
+        }
+
+        return totalScore;
     }
 }

@@ -1,3 +1,6 @@
+using Assets.Scripts.Helpers;
+using System.Linq;
+
 public class NeighborhoodShop : Building
 {
     public NeighborhoodShop()
@@ -6,7 +9,7 @@ public class NeighborhoodShop : Building
 
     }
 
-    public override int BaseScore => 6;
+    public override int BaseScore => 3;
 
     public override BuildingCategory BuildingCategory => BuildingCategory.Commercial;
 
@@ -14,6 +17,14 @@ public class NeighborhoodShop : Building
 
     public override int CalculateTotalBuildingScore(IGridState gridState)
     {
-        return base.CalculateTotalBuildingScore(gridState) + 1;
+        if (GridPosition == null)
+            return BaseScore;
+
+        var adjacentBuildings = GridElementsHelper.GetAdjacentBuildings(GridPosition.Value, gridState);
+
+        var finalScore = BaseScore
+            + adjacentBuildings.Where(e => e.BuildingCategory == BuildingCategory.Residential).Count();
+
+        return finalScore;
     }
 }

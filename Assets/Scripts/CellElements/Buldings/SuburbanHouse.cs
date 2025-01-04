@@ -10,7 +10,7 @@ public class SuburbanHouse : Building
         
     }
 
-    public override int BaseScore => 4;
+    public override int BaseScore => 2;
 
     public override BuildingCategory BuildingCategory => BuildingCategory.Residential;
 
@@ -25,7 +25,7 @@ public class SuburbanHouse : Building
 
         var finalScore = BaseScore
             + adjacentBuildings.Where(e => e.BuildingCategory == BuildingCategory.Facilities).Count()
-            - adjacentBuildings.Where(e => e.BuildingCategory == BuildingCategory.Industrial).Count();
+            - adjacentBuildings.Where(e => e.BuildingCategory == BuildingCategory.Industrial).Count() * 2;
 
         return finalScore;
     }

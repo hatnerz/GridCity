@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08000e4cdd9ce9d4d8bf27f62001cef0, type: 3}
   m_Name: Office
   m_EditorClassIdentifier: 
-  BuildingSprite: {fileID: 21300000, guid: 5987797bdabb10741b7992c0dd2c324e, type: 3}
+  BuildingSprite: {fileID: 21300000, guid: 9b513e9b8bddd754a94a7eb0a027e0a2, type: 3}
   BuildingSpriteScale: {x: 0.08, y: 0.08}
   BuildingSpriteOffset: {x: 0, y: 0.4}
   BuildingType: 3

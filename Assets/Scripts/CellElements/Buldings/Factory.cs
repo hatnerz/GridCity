@@ -1,3 +1,6 @@
+using Assets.Scripts.Helpers;
+using System.Linq;
+
 public class Factory : Building
 {
     public Factory()
@@ -6,7 +9,7 @@ public class Factory : Building
 
     }
 
-    public override int BaseScore => 5;
+    public override int BaseScore => 3;
 
     public override BuildingCategory BuildingCategory => BuildingCategory.Industrial;
 
@@ -14,6 +17,15 @@ public class Factory : Building
 
     public override int CalculateTotalBuildingScore(IGridState gridState)
     {
-        return base.CalculateTotalBuildingScore(gridState) + 1;
+        if (GridPosition == null)
+            return BaseScore;
+
+        var adjacentBuildings = GridElementsHelper.GetAdjacentBuildings(GridPosition.Value, gridState);
+
+        var bonusPoints = adjacentBuildings
+            .Where(building => building.BuildingCategory == BuildingCategory.Industrial)
+            .Count();
+
+        return BaseScore + bonusPoints;
     }
 }

@@ -14,13 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelNumber: 1
   DeckComposition:
-  - CardType: 0
-    Count: 3
-  - CardType: 1
-    Count: 2
-  - CardType: 2
+  - CardType: 10
     Count: 1
   - CardType: 11
-    Count: 1
+    Count: 2
+  - CardType: 0
+    Count: 4
   TargetScore: 50
   GridSize: {x: 3, y: 3}

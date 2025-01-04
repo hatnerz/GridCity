@@ -1,3 +1,6 @@
+using Assets.Scripts.Helpers;
+using System.Linq;
+
 public class University : Building
 {
     public University()
@@ -14,6 +17,20 @@ public class University : Building
 
     public override int CalculateTotalBuildingScore(IGridState gridState)
     {
-        return base.CalculateTotalBuildingScore(gridState) + 1;
+        if (GridPosition == null)
+            return BaseScore;
+
+        var adjacentBuildings = GridElementsHelper.GetAdjacentBuildings(GridPosition.Value, gridState);
+        var rowAndColumnBuildings = GridElementsHelper.GetBuildingsInRowAndColumn(GridPosition.Value, gridState);
+
+        int universityPenalty = rowAndColumnBuildings
+            .Where(building => building.BuildingType == BuildingType.University && building != this)
+            .Count() * -2;
+
+        int facilitiesBonus = adjacentBuildings
+            .Where(building => building.BuildingCategory == BuildingCategory.Facilities)
+            .Count();
+
+        return BaseScore + universityPenalty + facilitiesBonus;
     }
 }
