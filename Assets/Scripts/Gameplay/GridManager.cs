@@ -3,14 +3,12 @@ using static CardManager;
 
 public class GridManager : MonoBehaviour, IGridState
 {
-    [SerializeField] private int sizeX = 10;
-    [SerializeField] private int sizeY = 10;
     [SerializeField] private GridVisualizer gridVisualizer;
     [SerializeField] private CardManager cardManager;
     [SerializeField] private LevelData levelData;
 
-    public int SizeX { get { return sizeX; } }
-    public int SizeY { get { return sizeY; } }
+    public int SizeX { get { return GridElements.GetLength(0); } }
+    public int SizeY { get { return GridElements.GetLength(1); } }
 
     public CellElement[,] GridElements { get; private set; }
     public GameObject[,] BuildingPlacesObjects { get; private set; }
@@ -94,7 +92,6 @@ public class GridManager : MonoBehaviour, IGridState
         buildingPlace.VisualizeBuilding();
         GridElements[buildingPlace.GridPosition.x, buildingPlace.GridPosition.y] = buildingPlace.Building;
 
-        Debug.Log($"Building placed on {buildingPlace.GridPosition} ");
         OnBuildingPlaced?.Invoke(buildingPlace);
     }
 }

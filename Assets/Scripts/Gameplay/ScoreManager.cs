@@ -11,24 +11,26 @@ namespace Assets.Scripts.Score
     {
         [SerializeField] private GridManager gridManager;
 
-        /*void Start()
-        {
-
-        }*/
-
         public int CalculateTotalScore()
         {
             var totalScore = 0;
-            foreach (var buildingPlaceObjects in gridManager.BuildingPlacesObjects)
+            foreach (var buildingPlaceObject in gridManager.BuildingPlacesObjects)
             {
-                var building = buildingPlaceObjects.GetComponent<BuildingPlace>().Building;
-                if (building != null)
-                {
-                    totalScore += building.CalculateTotalBuildingScore(gridManager);
-                }
+                totalScore += CalculateCurrentBuildingPlaceScore(buildingPlaceObject.GetComponent<BuildingPlace>());
             }
 
             return totalScore;
+        }
+
+        public int CalculateCurrentBuildingPlaceScore(BuildingPlace buildingPlace)
+        {
+            var building = buildingPlace.Building;
+            if (building != null)
+            {
+                return building.CalculateTotalBuildingScore(gridManager);
+            }
+
+            return 0;
         }
     }
 

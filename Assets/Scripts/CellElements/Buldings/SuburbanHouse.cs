@@ -1,3 +1,5 @@
+using Assets.Scripts.Helpers;
+using System.Linq;
 using UnityEngine;
 
 public class SuburbanHouse : Building
@@ -8,7 +10,7 @@ public class SuburbanHouse : Building
         
     }
 
-    public override int BaseScore => 8;
+    public override int BaseScore => 4;
 
     public override BuildingCategory BuildingCategory => BuildingCategory.Residential;
 
@@ -16,6 +18,15 @@ public class SuburbanHouse : Building
 
     public override int CalculateTotalBuildingScore(IGridState gridState)
     {
-        return base.CalculateTotalBuildingScore(gridState) + 1;
+        if (GridPosition == null)
+            return BaseScore;
+
+        var adjacentBuildings = GridElementsHelper.GetAdjacentBuildings(GridPosition.Value, gridState);
+
+        var finalScore = BaseScore
+            + adjacentBuildings.Where(e => e.BuildingCategory == BuildingCategory.Facilities).Count()
+            - adjacentBuildings.Where(e => e.BuildingCategory == BuildingCategory.Industrial).Count();
+
+        return finalScore;
     }
 }

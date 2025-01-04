@@ -50,8 +50,6 @@ public class HandVisualizer : MonoBehaviour
         if (cardsToDisplay.Count == 0)
             return;
 
-        Debug.Log("Cards in hand : " + cardsToDisplay.Count);
-
         int positionX = 0;
 
         if (cardsToDisplay.Count % 2 == 0)

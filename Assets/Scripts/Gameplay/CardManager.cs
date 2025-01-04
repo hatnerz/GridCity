@@ -71,7 +71,6 @@ public class CardManager : MonoBehaviour
         var card = deckCards[0];
         deckCards.RemoveAt(0);
         var takenCard = AddCardGameObject(ResourceManager.Instance.CardDataDictionary[card.Type], card as BuildingCard);
-        Debug.Log(takenCard);
         OnCardTakenFromDeck?.Invoke(takenCard);
     }
 
@@ -89,9 +88,6 @@ public class CardManager : MonoBehaviour
 
         if (RemainsCardsInDeck > 0)
             TakeCardFromDeck();
-
-        if (RemainsCardsInDeck == 0 && cardObjectsInHand.Count == 0)
-            OnLastCardPlayed?.Invoke();
 
         return selectedCard.BuildingCard.Building;
     }

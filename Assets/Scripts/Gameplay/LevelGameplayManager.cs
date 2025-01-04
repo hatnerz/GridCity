@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Core;
 using Assets.Scripts.Score;
 using Assets.Scripts.UI.Hud;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Gameplay
@@ -11,6 +12,7 @@ namespace Assets.Scripts.Gameplay
         [SerializeField] private GridManager gridManager;
         [SerializeField] private ScoreManager scoreManager;
         [SerializeField] private LevelStateInformation levelStateInformation;
+        [SerializeField] private BuildingScoreVisualizer buildingScoreVisualizer;
 
         private void Start()
         {
@@ -23,6 +25,10 @@ namespace Assets.Scripts.Gameplay
 
             cardManager.InitializeLevelDeck(levelData);
             gridManager.InitializeLevelGrid(levelData);
+
+            buildingScoreVisualizer.InitializeBuildingPlaces(
+                gridManager.BuildingPlacesObjects.Cast<GameObject>()
+                    .Select(e => e.GetComponent<BuildingPlace>()).ToList());
 
             SetInitialLevelHudInformation(levelData);
 
@@ -49,6 +55,7 @@ namespace Assets.Scripts.Gameplay
         private void HandleScore()
         {
             var currentScore = scoreManager.CalculateTotalScore();
+            buildingScoreVisualizer.VisualizeBuildingPlaceNewScore();
             UpdateCurrentScoreHudInformation(currentScore);
         }
 

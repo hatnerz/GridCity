@@ -1,12 +1,14 @@
-﻿public class ShoppingMall : Building
+﻿using Assets.Scripts.Helpers;
+using UnityEngine;
+
+public class ShoppingMall : Building
 {
     public ShoppingMall()
         : base("Shopping Mall")
     {
-
     }
 
-    public override int BaseScore => 6;
+    public override int BaseScore => 8;
 
     public override BuildingCategory BuildingCategory => BuildingCategory.Commercial;
 
@@ -14,6 +16,10 @@
 
     public override int CalculateTotalBuildingScore(IGridState gridState)
     {
-        return base.CalculateTotalBuildingScore(gridState) + 1;
+        if (GridPosition == null)
+            return BaseScore;
+
+        var adjacentBuildings = GridElementsHelper.GetAdjacentBuildings(GridPosition.Value, gridState);
+        return BaseScore - (4 - adjacentBuildings.Count);
     }
 }
