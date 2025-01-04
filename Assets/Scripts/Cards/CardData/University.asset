@@ -15,4 +15,5 @@ MonoBehaviour:
   CardType: 7
   CardSprite: {fileID: 21300000, guid: f4a32d96b6699b645b6fe43e6bdd277b, type: 3}
   EffectsDescriptions:
-  - No additional effects
+  - -2 points if another university exists in the same row or column.
+  - +1 point for each adjacent Facilities building.

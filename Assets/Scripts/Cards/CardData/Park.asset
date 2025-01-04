@@ -15,4 +15,4 @@ MonoBehaviour:
   CardType: 1
   CardSprite: {fileID: 21300000, guid: 9810adece57bd724b86e1ccc3e68c37e, type: 3}
   EffectsDescriptions:
-  - No additional effects
+  - +1 point only for adjacent Residential or Commercial buildings.

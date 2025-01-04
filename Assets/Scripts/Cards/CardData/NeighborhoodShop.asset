@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardType: 5
   CardSprite: {fileID: 21300000, guid: bef6f998c1cdae8438f285b340a8af70, type: 3}
-  EffectsDescriptions: []
+  EffectsDescriptions:
+  - Can only be built adjacent to Residential buildings.
+  - +1 point for each adjacent Residential building.

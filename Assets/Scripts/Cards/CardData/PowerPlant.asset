@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardType: 11
   CardSprite: {fileID: 21300000, guid: 5dd6bb4dde2063445a54e0a79e1cd682, type: 3}
-  EffectsDescriptions: []
+  EffectsDescriptions:
+  - +2 points for each adjacent Industrial building.
+  - -1 point if there are no adjacent Industrial buildings.

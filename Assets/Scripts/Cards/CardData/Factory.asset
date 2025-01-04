@@ -15,4 +15,4 @@ MonoBehaviour:
   CardType: 10
   CardSprite: {fileID: 21300000, guid: 68992842d29d48942b3bc5a3fa27518e, type: 3}
   EffectsDescriptions:
-  - -1 for each adjacent unbuilt grid cell
+  - +1 point for each adjacent Industrial building.
