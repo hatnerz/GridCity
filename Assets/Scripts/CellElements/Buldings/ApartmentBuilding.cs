@@ -1,3 +1,6 @@
+using Assets.Scripts.Helpers;
+using System.Linq;
+
 public class ApartmentBuilding : Building
 {
     public ApartmentBuilding()
@@ -6,7 +9,7 @@ public class ApartmentBuilding : Building
 
     }
 
-    public override int BaseScore => 3;
+    public override int BaseScore => 5;
 
     public override BuildingCategory BuildingCategory => BuildingCategory.Residential;
 
@@ -14,6 +17,19 @@ public class ApartmentBuilding : Building
 
     public override int CalculateTotalBuildingScore(IGridState gridState)
     {
-        return base.CalculateTotalBuildingScore(gridState) + 1;
+        if (GridPosition == null)
+            return BaseScore;
+
+        var adjacentBuildings = GridElementsHelper.GetAdjacentBuildings(GridPosition.Value, gridState);
+
+        var bonusPoints = adjacentBuildings
+            .Where(building => building.BuildingCategory == BuildingCategory.Residential)
+            .Count();
+
+        var penaltyPoints = adjacentBuildings
+            .Where(building => building.BuildingCategory == BuildingCategory.Industrial)
+            .Count() * -2;
+
+        return BaseScore + bonusPoints + penaltyPoints;
     }
 }

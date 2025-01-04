@@ -1,3 +1,6 @@
+using Assets.Scripts.Helpers;
+using System.Linq;
+
 public class TownHall : Building
 {
     public TownHall()
@@ -6,7 +9,7 @@ public class TownHall : Building
 
     }
 
-    public override int BaseScore => 5;
+    public override int BaseScore => 1;
 
     public override BuildingCategory BuildingCategory => BuildingCategory.Special;
 
@@ -14,6 +17,11 @@ public class TownHall : Building
 
     public override int CalculateTotalBuildingScore(IGridState gridState)
     {
-        return base.CalculateTotalBuildingScore(gridState) + 1;
+        if (GridPosition == null)
+            return BaseScore;
+
+        var buildingsInRadius = GridElementsHelper.GetBuildingsInRadius(GridPosition.Value, 1, gridState);
+
+        return BaseScore + buildingsInRadius.Count();
     }
 }
