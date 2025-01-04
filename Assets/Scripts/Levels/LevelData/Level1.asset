@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelNumber: 1
   DeckComposition:
-  - CardType: 10
+  - CardType: 6
     Count: 1
   - CardType: 11
     Count: 2

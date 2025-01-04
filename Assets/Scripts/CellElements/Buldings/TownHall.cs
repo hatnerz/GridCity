@@ -20,16 +20,8 @@ public class TownHall : Building
         if (GridPosition == null)
             return BaseScore;
 
-        var adjacentBuildings = GridElementsHelper.GetAdjacentBuildings(GridPosition.Value, gridState);
+        var buildingsInRadius = GridElementsHelper.GetBuildingsInRadius(GridPosition.Value, 1, gridState);
 
-        var random = new System.Random();
-        var selectedBuildings = adjacentBuildings
-            .OrderBy(_ => random.Next())
-            .Take(2)
-            .ToList();
-
-        int bonusPoints = selectedBuildings.Sum(building => building.CalculateTotalBuildingScore(gridState));
-
-        return BaseScore + bonusPoints;
+        return BaseScore + buildingsInRadius.Count();
     }
 }
