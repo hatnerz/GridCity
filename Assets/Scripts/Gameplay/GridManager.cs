@@ -12,7 +12,8 @@ public class GridManager : MonoBehaviour, IGridState
     public int SizeX { get { return GridElements.GetLength(0); } }
     public int SizeY { get { return GridElements.GetLength(1); } }
 
-    public bool isEmptyGrid;
+    public bool isEmptyGrid { get; private set; }
+    private BuildingHighlighter groundHighlighter { get; set; }
 
     public CellElement[,] GridElements { get; private set; }
     public GameObject[,] BuildingPlacesObjects { get; private set; }
@@ -25,7 +26,7 @@ public class GridManager : MonoBehaviour, IGridState
 
     private void Start()
     {
-        if(levelData != null)
+        if (levelData != null)
         {
             InitializeLevelGrid(levelData);
         }
@@ -44,11 +45,17 @@ public class GridManager : MonoBehaviour, IGridState
         GridElements = new CellElement[gridSize.x, gridSize.y];
         isEmptyGrid = true;
 
-        for(int x = 0; x < gridSize.x; x++)
+        for (int x = 0; x < gridSize.x; x++)
         {
             for (int y = 0; y < gridSize.y; y++)
             {
                 GridElements[x, y] = new Ground("Land", GroundType.Land);
+
+                var buildingPlace = BuildingPlacesObjects[x, y].GetComponent<BuildingPlace>();
+                if (buildingPlace != null)
+                {
+                    buildingPlace.Initialize(this); 
+                }
             }
         }
     }
@@ -71,21 +78,23 @@ public class GridManager : MonoBehaviour, IGridState
     {
         //Debug.Log($"Pointer moved to building position {buildingPlace.GridPosition}");
         CurrentHoveringBuildingPlace = buildingPlace.gameObject;
+        buildingPlace.SetHighlight(true);
     }
 
     private void HandleBuildingPlaceExit(BuildingPlace buildingPlace)
     {
         // Debug.Log($"Pointer moved from building position  {buildingPlace.GridPosition}");
         CurrentHoveringBuildingPlace = null;
+        buildingPlace.SetHighlight(false);
     }
 
     private void HandleBuildingPlaceClick(BuildingPlace buildingPlace)
     {
-        if (!AllowedToBuild(buildingPlace)) 
+        if (!AllowedToBuild(buildingPlace))
             return;
 
         var buildingToBuild = cardManager.TryPlayActiveCard();
-        
+
 
         if (buildingToBuild == null)
         {
@@ -102,6 +111,8 @@ public class GridManager : MonoBehaviour, IGridState
         buildingPlace.VisualizeBuilding();
         GridElements[buildingPlace.GridPosition.x, buildingPlace.GridPosition.y] = buildingPlace.Building;
 
+        buildingPlace.SetHighlight(false);
+
         OnBuildingPlaced?.Invoke(buildingPlace);
 
         isEmptyGrid = false;
@@ -109,16 +120,27 @@ public class GridManager : MonoBehaviour, IGridState
 
     private bool AllowedToBuild(BuildingPlace buildingPlace)
     {
-        if (GridElements[buildingPlace.GridPosition.x, buildingPlace.GridPosition.y] is Ground)
-            return true;
+        if (GridElements[buildingPlace.GridPosition.x, buildingPlace.GridPosition.y] is not Ground)
+            return false;
 
         var neighbors = GridElementsHelper.GetAdjacentBuildings(buildingPlace.GridPosition, this);
         if (neighbors.Count > 0) Debug.Log(neighbors[0]);
 
-        if (isEmptyGrid || neighbors.Count > 0)
-            return true;
+        var hasNeighbors = HasNeighbors(buildingPlace.GridPosition);
+
+        if (!isEmptyGrid && !hasNeighbors)
+            return false;
 
         return true;
     }
+
+    public bool HasNeighbors(Vector2Int gridCoordinates)
+    {
+        if (GridElementsHelper.GetAdjacentBuildings(gridCoordinates, this).Count == 0)
+            return false;
+
+        return true;
+    }
+
 }
 
