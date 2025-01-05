@@ -1,5 +1,6 @@
 using Assets.Scripts.Helpers;
 using System.Linq;
+using UnityEngine;
 
 public class Hospital : Building
 {
@@ -22,11 +23,20 @@ public class Hospital : Building
 
         var buildingsInRadius = GridElementsHelper.GetBuildingsInRadius(GridPosition.Value, 1, gridState);
 
-        var bonusPoints = buildingsInRadius
-            .Where(building => building.BuildingCategory == BuildingCategory.Residential ||
-                               building.BuildingCategory == BuildingCategory.Facilities)
-            .Count();
+        var bonusPoints = Mathf.Min(
+            buildingsInRadius
+                .Where(building => building.BuildingCategory == BuildingCategory.Residential ||
+                                   building.BuildingCategory == BuildingCategory.Facilities)
+                .Count(),
+            5
+        );
 
-        return BaseScore + bonusPoints;
+        var penaltyPoints = buildingsInRadius
+            .Where(building => building.BuildingCategory == BuildingCategory.Industrial)
+            .Count() * 2;
+
+        return BaseScore + bonusPoints - penaltyPoints;
     }
+
+
 }

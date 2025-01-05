@@ -17,3 +17,4 @@ MonoBehaviour:
   EffectsDescriptions:
   - +1 point for each adjacent Commercial building.
   - +1 point for each adjacent Facilities building.
+  - -1 points for each adjacent Industrial building.

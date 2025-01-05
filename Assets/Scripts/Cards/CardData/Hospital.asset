@@ -15,4 +15,6 @@ MonoBehaviour:
   CardType: 8
   CardSprite: {fileID: 21300000, guid: 5771db9201dbf5840887e46df1e502e2, type: 3}
   EffectsDescriptions:
-  - +1 point for each Residential or Facilities building within a 1-tile radius.
+  - +1 point for each Residential or Facilities building within a 1-tile radius.(Up
+    to 5 points)
+  - -2 points for each adjacent Industrial building.

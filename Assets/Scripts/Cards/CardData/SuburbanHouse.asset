@@ -16,4 +16,4 @@ MonoBehaviour:
   CardSprite: {fileID: 21300000, guid: a0b59abd1072d2045976073a5280a0b0, type: 3}
   EffectsDescriptions:
   - +1 point for each adjacent Facilities building.
-  - -2 points for each adjacent Industrial building.
+  - -1 points for each adjacent Industrial building.

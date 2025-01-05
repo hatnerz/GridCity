@@ -15,4 +15,5 @@ MonoBehaviour:
   CardType: 4
   CardSprite: {fileID: 21300000, guid: 40ea720bb34fc394baa2913a3a3732f8, type: 3}
   EffectsDescriptions:
-  - +2 points for each adjacent Residential building.
+  - +2 points for each adjacent Residential building.(Up to 4 points)
+  - -1 points for each adjacent Industrial building.

@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Helpers;
 using System.Linq;
+using UnityEngine;
 
 public class Park : Building
 {
@@ -8,7 +9,7 @@ public class Park : Building
     {
     }
 
-    public override int BaseScore => 2;
+    public override int BaseScore => 3;
 
     public override BuildingCategory BuildingCategory => BuildingCategory.Facilities;
 
@@ -21,10 +22,17 @@ public class Park : Building
 
         var adjacentBuildings = GridElementsHelper.GetAdjacentBuildings(GridPosition.Value, gridState);
 
-        var finalScore = BaseScore
-            + adjacentBuildings.Where(e => e.BuildingCategory == BuildingCategory.Commercial).Count();
-  
+        int additionalPoints = adjacentBuildings
+            .Where(e => e.BuildingCategory == BuildingCategory.Commercial || e.BuildingCategory == BuildingCategory.Residential)
+            .Count();
 
-        return finalScore;
+        additionalPoints = Mathf.Min(additionalPoints, 2);
+
+        int penaltyPoints = adjacentBuildings
+            .Where(e => e.BuildingCategory == BuildingCategory.Industrial)
+            .Count();
+
+        return BaseScore + additionalPoints - penaltyPoints;
     }
+
 }
