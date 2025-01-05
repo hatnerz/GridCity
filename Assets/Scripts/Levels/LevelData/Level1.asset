@@ -22,5 +22,5 @@ MonoBehaviour:
     Count: 1
   - CardType: 11
     Count: 1
-  TargetScore: 50
+  TargetScore: 35
   GridSize: {x: 3, y: 3}

@@ -18,6 +18,7 @@ public class CardManager : MonoBehaviour
     public IReadOnlyCollection<GameObject> CardObjectsInHand => cardObjectsInHand.AsReadOnly();
     public int InitialDeckSize { get; private set; }
     public int RemainsCardsInDeck { get => deckCards.Count; }
+    public int RemainsCardsInHand { get => cardObjectsInHand.Count; }
 
     public event CardEventHandler OnCardPlayed;
     public event CardEventHandler OnCardTakenFromDeck;
@@ -87,7 +88,14 @@ public class CardManager : MonoBehaviour
         OnCardPlayed?.Invoke(selectedCardObject);
 
         if (RemainsCardsInDeck > 0)
+        {
             TakeCardFromDeck();
+        }
+
+        if (RemainsCardsInHand == 0)
+        {
+            OnLastCardPlayed?.Invoke();
+        }
 
         return selectedCard.BuildingCard.Building;
     }
