@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Purchasing;
 using UnityEngine.UI;
@@ -91,4 +92,57 @@ public class BuildingPlace : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         buildingSpriteRenderer.transform.localPosition = BuildingData.BuildingSpriteOffset;
         buildingSpriteRenderer.sortingOrder = (GridPosition.x * 2 - GridPosition.y * 2) + 3;
     }
+
+    public IEnumerator AnimateBuilding(float duration = 0.5f, float g = 40f)
+    {
+        Transform buildingTransform = buildingSpriteRenderer.transform;
+
+        Vector3 startPosition = new Vector3(buildingTransform.position.x, buildingTransform.position.y + 6f, buildingTransform.position.z);
+
+        Vector3 endPosition = buildingTransform.position;
+
+        buildingTransform.position = startPosition;
+
+        float elapsedTime = 0f;
+        float velocity = 2f;
+        PlayImpactSound();
+
+        while (elapsedTime < duration)
+        {
+            velocity += g * Time.deltaTime;
+            float deltaY = velocity * Time.deltaTime;
+            buildingTransform.position = new Vector3(
+                startPosition.x,
+                Mathf.Max(buildingTransform.position.y - deltaY, endPosition.y),
+                startPosition.z
+            );
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        buildingTransform.position = endPosition;
+
+
+        PlayParticles();
+    }
+
+    public void PlayParticles()
+    {
+        var particleSystem = GetComponentInChildren<ParticleSystem>();
+        if (particleSystem != null)
+        {
+            particleSystem.Play();
+        }
+    }
+
+    public void PlayImpactSound()
+    {
+        var audioSource = GetComponent<AudioSource>();
+        if (audioSource != null)
+        {
+            audioSource.Play();
+        }
+    }
+
 }
