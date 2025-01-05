@@ -8,6 +8,7 @@ public class BuildingPlace : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private SpriteRenderer buildingSpriteRenderer;
     [SerializeField] private GameObject highlightObject;
     [SerializeField] private Color highlightColor = Color.yellow;
+    [SerializeField] private Color cannotBuildColor = Color.yellow;
     [SerializeField] private Color canBuildColor = Color.green;
 
     public Vector2Int GridPosition { get; set; }
@@ -38,7 +39,7 @@ public class BuildingPlace : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (highlightObject != null)
             highlightObject.SetActive(false);
 
-        highlightColor.a = 0.3f;
+        cannotBuildColor.a = 0.3f;
         canBuildColor.a = 0.3f;
     }
 
@@ -77,7 +78,7 @@ public class BuildingPlace : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             var highlightRenderer = highlightObject.GetComponent<SpriteRenderer>();
             if (highlightRenderer != null)
             {
-                highlightRenderer.color = gridManager.HasNeighbors(GridPosition) ? canBuildColor : highlightColor;
+                highlightRenderer.color = gridManager.HasNeighbors(GridPosition) || gridManager.isEmptyGrid ? canBuildColor : cannotBuildColor;
                 highlightRenderer.sortingOrder = 100;
             }
         }
