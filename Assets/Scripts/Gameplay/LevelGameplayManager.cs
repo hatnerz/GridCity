@@ -13,6 +13,9 @@ namespace Assets.Scripts.Gameplay
         [SerializeField] private ScoreManager scoreManager;
         [SerializeField] private LevelStateInformation levelStateInformation;
         [SerializeField] private BuildingScoreVisualizer buildingScoreVisualizer;
+        [SerializeField] private Canvas levelHudCanvas;
+        [SerializeField] private GameObject winMenuPrefab;
+        [SerializeField] private GameObject gameOverMenuPrefab;
 
         private void Start()
         {
@@ -57,11 +60,37 @@ namespace Assets.Scripts.Gameplay
             var currentScore = scoreManager.CalculateTotalScore();
             buildingScoreVisualizer.VisualizeBuildingPlaceNewScore();
             UpdateCurrentScoreHudInformation(currentScore);
+
+            if(cardManager.RemainsCardsInHand == 0)
+            {
+                EndLevel();
+            }
         }
 
         private void UpdateCurrentScoreHudInformation(int score)
         {
             levelStateInformation.CurrentScoreText.text = $"Current score: {score}";
+        }
+
+        private void EndLevel()
+        {
+            var totalPlayerScore = scoreManager.CalculateTotalScore();
+            var currentLevelData = ResourceManager.Instance.LevelDataDictionary[GameplayState.CurrentLevelNumber];
+            var requiredScore = currentLevelData.TargetScore;
+
+            Debug.Log(totalPlayerScore);
+            Debug.Log(requiredScore);
+
+            if (totalPlayerScore >= requiredScore)
+            {
+                var winMenu = Instantiate(winMenuPrefab, levelHudCanvas.transform);
+                winMenu.GetComponent<WinMenuManager>().SetScoreInformation(totalPlayerScore, requiredScore);
+            }
+            else
+            {
+                var loseMenu = Instantiate(gameOverMenuPrefab, levelHudCanvas.transform);
+                loseMenu.GetComponent<GameOverMenuManager>().SetScoreInformation(totalPlayerScore, requiredScore);
+            }
         }
     }
 
