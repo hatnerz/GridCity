@@ -8,7 +8,7 @@ public class ShoppingMall : Building
     {
     }
 
-    public override int BaseScore => 5;
+    public override int BaseScore => 4;
 
     public override BuildingCategory BuildingCategory => BuildingCategory.Commercial;
 
@@ -34,6 +34,10 @@ public class ShoppingMall : Building
             else if (building.BuildingCategory == BuildingCategory.Commercial)
             {
                 totalScore += 2;
+            }
+            else if (building.BuildingCategory == BuildingCategory.Industrial)
+            {
+                totalScore -= 1;
             }
         }
 

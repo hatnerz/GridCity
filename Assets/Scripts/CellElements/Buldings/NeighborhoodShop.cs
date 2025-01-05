@@ -23,7 +23,8 @@ public class NeighborhoodShop : Building
         var adjacentBuildings = GridElementsHelper.GetAdjacentBuildings(GridPosition.Value, gridState);
 
         var finalScore = BaseScore
-            + adjacentBuildings.Where(e => e.BuildingCategory == BuildingCategory.Residential).Count();
+            + adjacentBuildings.Where(e => e.BuildingCategory == BuildingCategory.Residential).Count()
+            - adjacentBuildings.Where(e => e.BuildingCategory == BuildingCategory.Industrial).Count();
 
         return finalScore;
     }

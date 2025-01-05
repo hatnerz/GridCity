@@ -9,7 +9,7 @@ public class ApartmentBuilding : Building
 
     }
 
-    public override int BaseScore => 5;
+    public override int BaseScore => 4;
 
     public override BuildingCategory BuildingCategory => BuildingCategory.Residential;
 

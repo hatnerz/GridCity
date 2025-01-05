@@ -25,7 +25,7 @@ public class SuburbanHouse : Building
 
         var finalScore = BaseScore
             + adjacentBuildings.Where(e => e.BuildingCategory == BuildingCategory.Facilities).Count()
-            - adjacentBuildings.Where(e => e.BuildingCategory == BuildingCategory.Industrial).Count() * 2;
+            - adjacentBuildings.Where(e => e.BuildingCategory == BuildingCategory.Industrial).Count();
 
         return finalScore;
     }
