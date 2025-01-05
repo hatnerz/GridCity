@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Purchasing;
 using UnityEngine.UI;
@@ -91,4 +92,51 @@ public class BuildingPlace : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         buildingSpriteRenderer.transform.localPosition = BuildingData.BuildingSpriteOffset;
         buildingSpriteRenderer.sortingOrder = (GridPosition.x * 2 - GridPosition.y * 2) + 3;
     }
+
+    public IEnumerator AnimateBuilding(float duration = 0.5f, float g = 40f)
+    {
+        Transform buildingTransform = buildingSpriteRenderer.transform;
+
+        // Початкова позиція (згори)
+        Vector3 startPosition = new Vector3(buildingTransform.position.x, buildingTransform.position.y + 6f, buildingTransform.position.z);
+
+        // Кінцева позиція (місце на клітинці)
+        Vector3 endPosition = buildingTransform.position;
+
+        buildingTransform.position = startPosition; // Установлюємо початкову позицію
+
+        float elapsedTime = 0f;
+        float velocity = 2f; // Початкова швидкість
+
+        // Анімація падіння
+        while (elapsedTime < duration)
+        {
+            // Розраховуємо нову позицію з урахуванням гравітації
+            velocity += g * Time.deltaTime;
+            float deltaY = velocity * Time.deltaTime;
+            buildingTransform.position = new Vector3(
+                startPosition.x,
+                Mathf.Max(buildingTransform.position.y - deltaY, endPosition.y), // Забезпечуємо, що не пройдемо кінцеву точку
+                startPosition.z
+            );
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Установлюємо точну кінцеву позицію, щоб уникнути неточностей
+        buildingTransform.position = endPosition;
+
+        PlayParticles();
+    }
+
+    public void PlayParticles()
+    {
+        var particleSystem = GetComponentInChildren<ParticleSystem>();
+        if (particleSystem != null)
+        {
+            particleSystem.Play();
+        }
+    }
+
 }

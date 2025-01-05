@@ -116,6 +116,8 @@ public class GridManager : MonoBehaviour, IGridState
         OnBuildingPlaced?.Invoke(buildingPlace);
 
         isEmptyGrid = false;
+
+        StartCoroutine(buildingPlace.AnimateBuilding());
     }
 
     private bool AllowedToBuild(BuildingPlace buildingPlace)
