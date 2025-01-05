@@ -23,7 +23,7 @@ public class MainMenuManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Start Game Button is not assigned in the inspector!");
+            Debug.LogError("Start Game Button is not assigned in the inspector");
         }
 
         if (quitGameButton != null)
@@ -32,7 +32,7 @@ public class MainMenuManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Quit Game Button is not assigned in the inspector!");
+            Debug.LogError("Quit Game Button is not assigned in the inspector");
         }
     }
 }
