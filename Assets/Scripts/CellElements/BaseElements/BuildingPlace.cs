@@ -97,26 +97,23 @@ public class BuildingPlace : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         Transform buildingTransform = buildingSpriteRenderer.transform;
 
-        // Початкова позиція (згори)
         Vector3 startPosition = new Vector3(buildingTransform.position.x, buildingTransform.position.y + 6f, buildingTransform.position.z);
 
-        // Кінцева позиція (місце на клітинці)
         Vector3 endPosition = buildingTransform.position;
 
-        buildingTransform.position = startPosition; // Установлюємо початкову позицію
+        buildingTransform.position = startPosition;
 
         float elapsedTime = 0f;
-        float velocity = 2f; // Початкова швидкість
+        float velocity = 2f;
+        PlayImpactSound();
 
-        // Анімація падіння
         while (elapsedTime < duration)
         {
-            // Розраховуємо нову позицію з урахуванням гравітації
             velocity += g * Time.deltaTime;
             float deltaY = velocity * Time.deltaTime;
             buildingTransform.position = new Vector3(
                 startPosition.x,
-                Mathf.Max(buildingTransform.position.y - deltaY, endPosition.y), // Забезпечуємо, що не пройдемо кінцеву точку
+                Mathf.Max(buildingTransform.position.y - deltaY, endPosition.y),
                 startPosition.z
             );
 
@@ -124,8 +121,8 @@ public class BuildingPlace : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             yield return null;
         }
 
-        // Установлюємо точну кінцеву позицію, щоб уникнути неточностей
         buildingTransform.position = endPosition;
+
 
         PlayParticles();
     }
@@ -136,6 +133,15 @@ public class BuildingPlace : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (particleSystem != null)
         {
             particleSystem.Play();
+        }
+    }
+
+    public void PlayImpactSound()
+    {
+        var audioSource = GetComponent<AudioSource>();
+        if (audioSource != null)
+        {
+            audioSource.Play();
         }
     }
 
