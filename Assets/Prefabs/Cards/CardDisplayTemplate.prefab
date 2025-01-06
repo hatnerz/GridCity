@@ -592,6 +592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverDelay: 0.3
   scaleFactor: 1.3
+  moveOnHover: {x: 0, y: 90}
   scaleSpeed: 25
 --- !u!1 &6284944319315536559
 GameObject:
