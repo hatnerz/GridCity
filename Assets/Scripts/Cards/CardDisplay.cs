@@ -11,6 +11,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Image cardImage;
     [SerializeField] private TMP_Text cardDescription;
     [SerializeField] private GameObject backgroundOutlineObject;
+    [SerializeField] private TMP_Text buildingCategory;
 
     private bool isHighlighted;
     private Outline outline;
@@ -45,6 +46,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler
         {
             cardName.text = BuildingCard.Building.Name;
             cardScore.text = BuildingCard.Building.BaseScore.ToString();
+            buildingCategory.text = $"Category: {BuildingCard.Building.BuildingCategory.ToString()}";
         }
     }
 
